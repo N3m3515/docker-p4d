@@ -11,4 +11,4 @@ RUN echo "${USER} ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/${USER}
 WORKDIR /home/${USER}
 USER ${USER}
 # Run Daemon
-CMD ["sudo","/usr/local/bin/p4d","-n"]
+CMD ["sudo","/usr/bin/p4d","-n"]

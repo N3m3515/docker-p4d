@@ -8,7 +8,7 @@ StartLimitBurst = 5
 [Service]
 
 Type = forking
-ExecStart = /usr/local/bin/p4d
+ExecStart = /usr/bin/p4d
 Restart = always
 RestartSec = 30
 
