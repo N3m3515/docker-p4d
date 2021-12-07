@@ -1,11 +1,9 @@
-# Debian Base Image from https://hub.docker.com/r/arm32v7/debian
+# P4D Base Image
 FROM linux_p4d-base
-
-COPY linux-p4d/binaries/ /
-
-RUN chmod +x /usr/local/bin/p4d
-
+#Copy Precompiled binaries to root directory
+COPY binaries/ /
+# Epose TCP Port 1111
 EXPOSE 1111
-
+# Run Daemon
 CMD /usr/local/bin/p4d
 CMD ["bash", "tail -f /var/log/p4d.log"]
