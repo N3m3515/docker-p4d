@@ -16,6 +16,7 @@ services:
       - SMTP_STARTTLS=Yes
       - SMTP_USERNAME=user
       - SMTP_PASSWORD=password
+      - TZ=Europe/Berlin
     ports:
       - 1111:1111
     devices:
