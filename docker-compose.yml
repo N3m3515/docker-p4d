@@ -1,6 +1,6 @@
 services:
   p4d:
-    image: linux_p4d:0.8.9
+    image: n3m3515/docker-p4d:latest
     container_name: linux_p4d
     privileged: true
     environment:
