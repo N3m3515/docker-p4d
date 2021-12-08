@@ -5,6 +5,7 @@ services:
     privileged: true
     environment:
       - DB_HOST=p4d_db
+      - DB_PORT=3306
       - DB_USER=p4
       - DB_PASS=p4
       - DB_NAME=p4
