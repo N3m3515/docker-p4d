@@ -40,6 +40,9 @@ If this project help you, you can give me a cup of coffee :)
 - USB-Serial converter must be connected to COM1 on Fröling mainboard
 - A Linux based operating system is required
 
+For a ready Build Image visit:
+https://hub.docker.com/r/n3m3515/docker-p4d
+
 # Build Process
 Setting up the Build Enviroment:
 Install Dependencies:
