@@ -4,7 +4,7 @@ services:
     container_name: linux_p4d
     privileged: true
     environment:
-      - DB_HOST=localhost
+      - DB_HOST=p4d_db
       - DB_USER=p4
       - DB_PASS=p4
       - DB_NAME=p4
