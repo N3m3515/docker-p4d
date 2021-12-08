@@ -41,15 +41,51 @@ If this project help you, you can give me a cup of coffee :)
 - A Linux based operating system is required
 
 # Build Process
+Setting up the Build Enviroment:
+Install Dependencies:
+```
+apt-get update
+apt-get upgrade
+apt-get install 
+git build-essential pkg-config libssl-dev libjansson-dev libxml2-dev libcurl4-openssl-dev libssl-dev libmariadbclient-dev libmariadb-dev-compat uuid-dev cmake python3-dev wiringpi
+```
+Building libwebsockets:
+```
+cd /usr/src/
+git clone https://libwebsockets.org/repo/libwebsockets libwebsockets
+cd libwebsockets
+mkdir build
+cd build
+cmake ..
+make -s
+make -s install
+```
+Installing Docker:
+```
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+```
+Setting up the Docker build enviroment:
+```
+cd /usr/src/
+git clone https://github.com/N3m3515/docker-p4d/ docker-p4d
+```
+Building p4d:
+```
+cd /usr/src/
+rm -r linux-p4d/
+git clone https://github.com/horchi/linux-p4d/
+cd linux-p4d/
+make clean all
+make install DESTDIR=/usr/src/docker-p4d/docker-linux-p4d/root/ PREFIX=/usr
+```
 Build Base image in docker-linux-p4d-base Directory:
 ```
+cd /usr/src/docker-p4d/docker-linux-p4d-base/
 sudo docker build -t "linux_p4d-base" .
-```
-To build the p4d binaries:
-```
-make install DESTDIR=/docker-linux-p4d/root/ PREFIX=/usr
 ```
 After that Build Final Image in docker-linux-p4d Directory:
 ```
-sudo docker build -t "linux_p4d:0.8.9" .
+cd /usr/src/docker-p4d/docker-linux-p4d/
+sudo docker build -t "linux_p4d" .
 ```
