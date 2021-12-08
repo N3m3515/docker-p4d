@@ -1,0 +1,29 @@
+services:
+  p4d:
+    image: linux_p4d:0.8.9
+    container_name: linux_p4d
+    privileged: true
+    environment:
+      - DB_HOST=localhost
+      - DB_USER=p4
+      - DB_PASS=p4
+      - DB_NAME=p4
+    ports:
+      - 1111:1111
+    restart: unless-stopped
+    depends_on:
+      - p4d_db
+  p4d_db:
+    image: lscr.io/linuxserver/mariadb
+    container_name: p4d_db
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - MYSQL_ROOT_PASSWORD=p4d
+      - TZ=Europe/Berlin
+      - MYSQL_DATABASE=p4d
+      - MYSQL_USER=p4d
+      - MYSQL_PASSWORD=p4d
+    volumes:
+      - /linux_p4d/mariadb:/config
+    restart: unless-stopped

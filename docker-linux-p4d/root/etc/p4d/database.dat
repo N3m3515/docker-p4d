@@ -1,0 +1,302 @@
+
+// ----------------------------------------------------------------
+// Table Samples
+// ----------------------------------------------------------------
+
+Table samples
+{
+   ADDRESS              ""  address              UInt         4 Primary,
+   TYPE                 ""  type                 Ascii        2 Primary,
+   AGGREGATE            ""  aggregate            Ascii        1 Primary,
+   TIME                 ""  time                 DateTime     0 Primary,
+
+   INSSP                ""  inssp                Int         10 Meta,
+   UPDSP                ""  updsp                Int         10 Meta,
+
+   VALUE                ""  value                Float      122 Data,
+   TEXT                 ""  text                 Ascii       50 Data,
+   SAMPLES              ""  samples              Int          3 Data,
+}
+
+// ----------------------------------------------------------------
+// Indices for Samples
+// ----------------------------------------------------------------
+
+Index samples
+{
+   time                 ""  TIME,
+   type                 ""  TYPE,
+   aggregate            ""  AGGREGATE,
+   addr_type_time       ""  ADDRESS TYPE TIME,
+}
+
+// ----------------------------------------------------------------
+// Table peaks
+// ----------------------------------------------------------------
+
+Table peaks
+{
+   ADDRESS              ""  address              UInt         4 Primary,
+   TYPE                 ""  type                 Ascii        2 Primary,
+
+   INSSP                ""  inssp                Int         10 Meta,
+   UPDSP                ""  updsp                Int         10 Meta,
+
+   MIN                  ""  minv                 Float      122 Data,
+   MAX                  ""  maxv                 Float      122 Data,
+}
+
+// ----------------------------------------------------------------
+// Table ValueFacts
+// ----------------------------------------------------------------
+
+Table valuefacts
+{
+   ADDRESS              ""          address              UInt         4 Primary,
+   TYPE                 ""          type                 Ascii        2 Primary,
+
+   INSSP                ""          inssp                Int         10 Meta,
+   UPDSP                ""          updsp                Int         10 Meta,
+
+   GROUPID              ""          groupid              Int         10 Data,
+   STATE                ""          state                Ascii        1 Data,
+   UNIT                 ""          unit                 Ascii        5 Data,
+   FACTOR               ""          factor               Int          4 Data,
+   NAME                 ""          name                 Ascii      100 Data,
+   TITLE                ""          title                Ascii      100 Data,
+   USRTITLE             ""          usrtitle             Ascii      100 Data,
+   SUBTYPE              "data type" res1                 Int          4 Data,
+   CHOICES              ""          choices              Ascii      250 Data,
+   WIDGETOPT            ""          widgetopt            Ascii     1000 Data,
+   RIGHTS   "needed control rights" rights               Int          0 Data,
+}
+
+// ----------------------------------------------------------------
+// Groups (Baugruppen)
+// ----------------------------------------------------------------
+
+Table groups
+{
+   ID                   ""  id                   UInt         4 Primary|Autoinc,
+   NAME                 ""  name                 Ascii      100 Data,
+}
+
+// ----------------------------------------------------------------
+// Table Config
+// ----------------------------------------------------------------
+
+Table config
+{
+   OWNER                ""  owner                Ascii       40 Primary,
+   NAME                 ""  name                 Ascii       40 Primary,
+   INSSP                ""  inssp                Int          0 Meta,
+   UPDSP                ""  updsp                Int          0 Meta,
+   VALUE                ""  value                Text      1500 Data,
+}
+
+// ----------------------------------------------------------------
+// Table Dashboards
+// ----------------------------------------------------------------
+
+Table dashboards
+{
+   ID                   ""  id                   UInt         4 Primary|Autoinc,
+
+   INSSP                ""  inssp                Int          0 Meta,
+   UPDSP                ""  updsp                Int          0 Meta,
+
+   TITLE                ""  title                Ascii      100 Data,
+   SYMBOL               ""  symbol               Ascii      100 Data,
+}
+
+// ----------------------------------------------------------------
+// Table DashboardWidgets
+// ----------------------------------------------------------------
+
+Table dashboardwidgets
+{
+   DASHBOARDID          ""  dashboardid          UInt         4 Primary,
+   ADDRESS              ""  address              UInt         4 Primary,
+   TYPE                 ""  type                 Ascii        2 Primary,
+
+   INSSP                ""  inssp                Int          0 Meta,
+   UPDSP                ""  updsp                Int          0 Meta,
+
+   WIDGETOPTS           ""  widgetopts           Ascii     1000 Data,
+   ORDER                ""  ord                  Int         10 Data,
+}
+
+// ----------------------------------------------------------------
+// Table Users
+// ----------------------------------------------------------------
+
+Table users
+{
+   USER                 ""               user        Ascii      40 Primary,
+   INSSP                ""               inssp       Int         0 Meta,
+   UPDSP                ""               updsp       Int         0 Meta,
+   PASSWD               "md5 sum"        passwd      Ascii      40 Data,
+   TOKEN                ""               token       Ascii     200 Data,
+   RIGHTS               "Rights Bitmask" rights      INT       200 Data,
+}
+
+// ----------------------------------------------------------------
+// Table SensorAlert
+// ----------------------------------------------------------------
+
+Table sensoralert
+{
+   ID                   ""  id                   UInt        11 Primary|Autoinc,
+
+   INSSP                ""  inssp                Int         10 Meta,
+   UPDSP                ""  updsp                Int         10 Meta,
+
+   KIND                 ""  kind                 Ascii        1 Data,  // 'S'ub or 'M'aster rule
+   SUBID                ""  subid                UInt        11 Data,  // reference to 'sub' rule
+   LGOP                 ""  lgop                 UInt         0 Data,  // logical operator
+
+   ADDRESS              ""  address              UInt         4 Data,
+   TYPE                 ""  type                 Ascii        2 Data,
+   STATE                ""  state                Ascii        1 Data,
+   MIN                  ""  min                  Int         10 Data,
+   MAX                  ""  max                  Int         10 Data,
+   RANGEM               ""  rangem               Int         10 Data,
+   DELTA                ""  delta                Int         10 Data,
+   MADDRESS             ""  maddress             Ascii      100 Data,
+   MSUBJECT             ""  msubject             Ascii      100 Data,
+   MBODY                ""  mbody                Text      2000 Data,
+   LASTALERT            ""  lastalert            Int         10 Data,
+   MAXREPEAT            ""  maxrepeat            Int         10 Data   // [minutes]
+}
+
+// ----------------------------------------------------------------
+// Table
+// ----------------------------------------------------------------
+
+Table scripts
+{
+   ID                   ""                      id                   UInt        11 Primary|Autoinc,
+
+   INSSP                ""                      inssp                Int          0 Meta,
+   UPDSP                ""                      updsp                Int          0 Meta,
+
+   PATH                 ""                      path                 Ascii      100 Data,
+}
+
+// ----------------------------------------------------------------
+// Indices for scrips table
+// ----------------------------------------------------------------
+
+Index scripts
+{
+   path             ""  PATH
+}
+
+// ----------------------------------------------------------------
+// Table Menu
+// ----------------------------------------------------------------
+
+Table menu
+{
+   ID                   ""  id                   UInt         4 Primary|Autoinc,
+
+   INSSP                ""  inssp                Int         10 Meta,
+   UPDSP                ""  updsp                Int         10 Meta,
+
+   PARENT               ""  parent               UInt         5 Data,
+   CHILD                ""  child                UInt         5 Data,
+   TYPE                 ""  type                 UInt         1 Data,
+   ADDRESS              ""  address              UInt         4 Data,
+   TITLE                ""  title                Ascii      100 Data,
+   STATE                ""  state                Ascii        1 Data,
+   UNIT                 ""  unit                 Ascii        5 Data,
+   DIGITS               ""  digits               Int          1 Data,
+   MIN                  ""  min                  Int          1 Data,
+   MAX                  ""  max                  Int          1 Data,
+   DEF                  ""  def                  Int          1 Data,
+   FACTOR               ""  factor               Int          1 Data,
+   VALUE                ""  value                Ascii      100 Data,
+   PUB1                 ""  pub1                 Int          1 Data,
+   PUB2                 ""  pub2                 Int          1 Data,
+   PUB3                 ""  pub3                 Int          1 Data,
+   PUW1                 ""  puw1                 Int          1 Data,
+   UNKNOWN1             ""  unknown1             Int          4 Data,
+   UNKNOWN2             ""  unknown2             Int          4 Data,
+}
+
+// ----------------------------------------------------------------
+// Table TimeRanges
+// ----------------------------------------------------------------
+
+Table timeranges
+{
+   ADDRESS              ""  address              UInt         4 Primary,
+
+   FROM1                ""  from1                Ascii        5 Data,
+   TO1                  ""  to1                  Ascii        5 Data,
+   FROM2                ""  from2                Ascii        5 Data,
+   TO2                  ""  to2                  Ascii        5 Data,
+   FROM3                ""  from3                Ascii        5 Data,
+   TO3                  ""  to3                  Ascii        5 Data,
+   FROM4                ""  from4                Ascii        5 Data,
+   TO4                  ""  to4                  Ascii        5 Data,
+}
+
+// ----------------------------------------------------------------
+// Table Pellets
+// ----------------------------------------------------------------
+
+Table pellets
+{
+   ID                   ""    id                   UInt         4 Primary|Autoinc,
+
+   INSSP                ""    inssp                Int         10 Meta,
+   UPDSP                ""    updsp                Int         10 Meta,
+
+   TIME                 ""    time                 DateTime     0 Data,
+   AMOUNT               "kg"  amount               Int          0 Data,
+   PRICE                "€/t" price                Float      122 Data,
+   COMMENT              ""    comment              Ascii      200 Data,
+}
+
+// ----------------------------------------------------------------
+// Table SchemaConf
+// ----------------------------------------------------------------
+
+Table schemaconf
+{
+   ADDRESS              ""  address              UInt         4 Primary,
+   TYPE                 ""  type                 Ascii        2 Primary,
+
+   INSSP                ""  inssp                Int         10 Meta,
+   UPDSP                ""  updsp                Int         10 Meta,
+
+   STATE                ""  state                Ascii        1 Data,
+   KIND                 "kind of display" kind   Int          1 Data,
+   WIDTH                "image width"     width  Int          1 Data,
+   HEIGHT               "image height"    height Int          1 Data,
+   SHOWUNIT             ""  showunit             Int          1 Data,
+   SHOWTITLE            ""  showtitle            Int          1 Data,
+   USRTEXT              ""  usrtext              Ascii      100 Data,
+   FUNCTION             ""  function             Text      2000 Data,
+   PROPERTIES           ""  properties           Text      1000 Data,
+}
+
+// ----------------------------------------------------------------
+// Table Errors
+// ----------------------------------------------------------------
+
+Table errors
+{
+   ID                   ""                id         UInt        11 Primary|Autoinc,
+   INSSP                ""                inssp      Int          0 Meta,
+   UPDSP                ""                updsp      Int          0 Meta,
+   TIME1                "time gekommen"   time1      DateTime     0 Data,
+   TIME4                "time gegangen"   time4      DateTime     0 Data,
+   TIME2                "time quittiert"  time2      DateTime     0 Data,
+   NUMBER               ""                number     Int         10 Data,
+   INFO                 ""                info       Int         10 Data,
+   STATE                ""                state      Ascii       10 Data,
+   TEXT                 ""                text       Ascii      100 Data,
+   MAILCNT              ""                mailcnt    Int          0 Data,
+}
