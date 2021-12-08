@@ -14,5 +14,7 @@ USER ${USER}
 #Add German locales
 RUN sudo apt-get install -y locales
 RUN locale-gen de_DE.UTF-8
+#export ENV
+RUN set -o allexport
 # Run Daemon
-CMD ["sudo","/home/p4d/start.sh"]
+CMD ["sudo","-E","/home/p4d/start.sh"]
