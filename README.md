@@ -55,6 +55,7 @@ git build-essential pkg-config libssl-dev libjansson-dev libxml2-dev libcurl4-op
 Building libwebsockets:
 ```
 cd /usr/src/
+rm -r libwebsockets/
 git clone https://libwebsockets.org/repo/libwebsockets libwebsockets
 cd libwebsockets
 mkdir build
