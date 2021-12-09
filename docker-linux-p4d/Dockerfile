@@ -13,7 +13,8 @@ RUN echo "${USER} ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/${USER}
 USER ${USER}
 #Add German locales
 RUN sudo apt-get install -y locales
-RUN sed -i '/de_DE.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
+RUN sudo touch /usr/share/locale/locale.alias
+RUN sudo sed -i '/de_DE.UTF-8/s/^# //g' /etc/locale.gen && sudo locale-gen
 ENV LANG de_DE.UTF-8 
 ENV LANGUAGE de_DE.UTF-8 
 ENV LC_ALL de_DE.UTF-8
