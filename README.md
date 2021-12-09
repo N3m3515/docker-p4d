@@ -72,6 +72,7 @@ sudo sh get-docker.sh
 Setting up the Docker build enviroment:
 ```
 cd /usr/src/
+rm -r docker-p4d
 git clone https://github.com/N3m3515/docker-p4d/ docker-p4d
 ```
 Building p4d:
