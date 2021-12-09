@@ -21,6 +21,8 @@ services:
       - 1111:1111
     devices:
       - /dev/ttyUSB0:/dev/ttyUSB0
+      volumes:
+      - /linux_p4d/userimages:/var/lib/p4d/img/user/
     restart: unless-stopped
     depends_on:
       - p4d_db
