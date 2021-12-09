@@ -13,7 +13,10 @@ RUN echo "${USER} ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/${USER}
 USER ${USER}
 #Add German locales
 RUN sudo apt-get install -y locales
-RUN locale-gen de_DE.UTF-8
+RUN sed -i '/de_DE.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
+ENV LANG de_DE.UTF-8 
+ENV LANGUAGE de_DE.UTF-8 
+ENV LC_ALL de_DE.UTF-8
 #export ENV
 RUN set -o allexport
 # Run Daemon
