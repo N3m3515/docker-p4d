@@ -5,7 +5,7 @@ touch /home/p4d/msmtprc
 echo "Setup daemon.conf"
 
 #Reading DB_HOST Variable and writing it to /home/p4d/daemon.conf
-if [[ test -z "$DB_HOST" ]];
+if [[ -z "$DB_HOST" ]];
 then
 echo "Setting DB_HOST to Default Value: localhost"
 echo "DbHost = localhost " >> /home/p4d/daemon.conf
@@ -15,7 +15,7 @@ echo "DbHost = "$DB_HOST >> /home/p4d/daemon.conf
 fi
 
 #Reading DB_PORT Variable and writing it to /home/p4d/daemon.conf
-if [[ test -z "$DB_PORT" ]];
+if [[ -z "$DB_PORT" ]];
 then
 echo "Setting DB_PORT to Default Value: 3306"
 echo "DbPort = 3306" >> /home/p4d/daemon.conf
@@ -25,7 +25,7 @@ echo "DbPort = "$DB_PORT >> /home/p4d/daemon.conf
 fi
 
 #Reading DB_NAME Variable and writing it to /home/p4d/daemon.conf
-if [[ test -z "$DB_NAME" ]];
+if [[ -z "$DB_NAME" ]];
 then
 echo "Setting DB_NAME to Default Value: p4"
 echo "DbName = p4" >> /home/p4d/daemon.conf
@@ -35,7 +35,7 @@ echo "DbName = "$DB_NAME >> /home/p4d/daemon.conf
 fi
 
 #Reading DB_USER Variable and writing it to /home/p4d/daemon.conf
-if [[ test -z "$DB_USER" ]];
+if [[ -z "$DB_USER" ]];
 then
 echo "Setting DB_USER to Default Value: p4"
 echo "DbUser = p4" >> /home/p4d/daemon.conf
@@ -45,7 +45,7 @@ echo "DbUser = "$DB_USER >> /home/p4d/daemon.conf
 fi
 
 #Reading DB_PASS Variable and writing it to /home/p4d/daemon.conf
-if [[ test -z "$DB_PASS" ]];
+if [[ -z "$DB_PASS" ]];
 then
 echo "Setting DB_PASS to Default Value: p4"
 echo "DbPass = p4" >> /home/p4d/daemon.conf
@@ -61,7 +61,7 @@ echo "defaults" > /home/p4d/msmtprc
 echo "defaults"
 
 #Reading SMTP_PORT Variable and writing it to /home/p4d/msmtprc
-if [[ test -z "$SMTP_PORT" ]];
+if [[ -z "$SMTP_PORT" ]];
 then
 echo "Setting SMTP_PORT to Default Value: 25"
 echo "port 25" >> /home/p4d/msmtprc
@@ -77,7 +77,7 @@ echo "logfile        /var/log/msmtp.log" >> /home/p4d/msmtprc
 echo "logfile        /var/log/msmtp.log"
 
 #Reading SMTP_MAIL_FROM Variable and writing it to /home/p4d/msmtprc
-if [[ test -z "$SMTP_MAIL_FROM" ]];
+if [[ -z "$SMTP_MAIL_FROM" ]];
 then
 echo "Setting SMTP_MAIL_FROM to Default Value: user@domain.com"
 echo "account user@domain.com" >> /home/p4d/msmtprc
@@ -91,12 +91,12 @@ echo "account default: "$SMTP_MAIL_FROM >> /home/p4d/msmtprc
 fi
 
 #Reading SMTP_TLS Variable and writing it to /home/p4d/msmtprc
-if [[ test -z "$SMTP_TLS" ]];
+if [[ -z "$SMTP_TLS" ]];
 then
 echo "Setting SMTP_TLS to Default Value: off"
 echo "tls off" >> /home/p4d/msmtprc
 else
- if [[ test "$SMTP_TLS" == "off" ]];
+ if [[ "$SMTP_TLS" == "off" ]];
  then
  echo "tls "$SMTP_TLS
  echo "tls "$SMTP_TLS >> /home/p4d/msmtprc
@@ -107,7 +107,7 @@ else
 fi
 
 #Reading SMTP_SERVER Variable and writing it to /home/p4d/msmtprc
-if [[ test -z "$SMTP_SERVER" ]];
+if [[ -z "$SMTP_SERVER" ]];
 then
 echo "Setting SMTP_SERVER to Default Value: smtp.server.com"
 echo "host smtp.server.com" >> /home/p4d/msmtprc
@@ -117,12 +117,12 @@ echo "host "$SMTP_SERVER >> /home/p4d/msmtprc
 fi
 
 #Reading SMTP_AUTH Variable and writing it to /home/p4d/msmtprc
-if [[ test -z "$SMTP_AUTH" ]];
+if [[ -z "$SMTP_AUTH" ]];
 then
 echo "Setting SMTP_AUTH to Default Value: off"
 echo "auth off" >> /home/p4d/msmtprc
 else
- if [[ test "$SMTP_AUTH" == "off" ]];
+ if [[ "$SMTP_AUTH" == "off" ]];
  then
  echo "auth "$SMTP_AUTH
  echo "auth "$SMTP_AUTH >> /home/p4d/msmtprc
@@ -133,7 +133,7 @@ else
 fi
 
 #Reading SMTP_USERNAME Variable and writing it to /home/p4d/msmtprc
-if [[ test -z "$SMTP_USERNAME" ]];
+if [[ -z "$SMTP_USERNAME" ]];
 then
 echo "Setting SMTP_USERNAME to Default Value: username"
 echo "user username" >> /home/p4d/msmtprc
@@ -143,7 +143,7 @@ echo "user "$SMTP_USERNAME >> /home/p4d/msmtprc
 fi
 
 #Reading SMTP_PASSWORD Variable and writing it to /home/p4d/msmtprc
-if [[ test -z "$SMTP_PASSWORD" ]];
+if [[ -z "$SMTP_PASSWORD" ]];
 then
 echo "Setting SMTP_PASSWORD to Default Value: password"
 echo "password password" >> /home/p4d/msmtprc
