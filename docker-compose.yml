@@ -10,10 +10,10 @@ services:
       - DB_PASS=p4
       - DB_NAME=p4
       - SMTP_MAIL_FROM=user@web.de
-      - SMTP_SERVER=smtp.web.de:587
-      - SMTP_NAME=heizung
-      - SMTP_TLS=Yes
-      - SMTP_STARTTLS=Yes
+      - SMTP_SERVER=smtp.web.de
+      - SMTP_Port=587
+      - SMTP_TLS=on
+      - SMTP_AUTH=on
       - SMTP_USERNAME=user
       - SMTP_PASSWORD=password
       - TZ=Europe/Berlin
