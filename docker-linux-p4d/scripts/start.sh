@@ -1,8 +1,6 @@
 #!/bin/bash
 touch /home/p4d/daemon.conf
 touch /home/p4d/msmtprc
-#touch /home/p4d/ssmtp.conf
-#touch /home/p4d/revaliases
 
 echo "Setup daemon.conf"
 echo "DbHost = "$DB_HOST
@@ -42,29 +40,5 @@ echo "auth "$SMTP_AUTH
 echo "user "$SMTP_USERNAME
 echo "password "$SMTP_PASSWORD
 echo "account default : "$SMTP_MAIL_FROM
-
-
-#echo "Setup ssmtp.conf"
-#echo "root="$SMTP_MAIL_FROM
-#echo "mailhub="$SMTP_SERVER
-#echo "hostname="$SMTP_NAME
-#echo "FromLineOverride=YES"
-#echo "UseTLS="$SMTP_TLS
-#echo "UseSTARTTLS="$SMTP_STARTTLS
-#echo "AuthUser="$SMTP_USERNAME
-#echo "AuthPass="$SMTP_PASSWORD
-
-#echo "root="$SMTP_MAIL_FROM > /home/p4d/ssmtp.conf
-#echo "mailhub="$SMTP_SERVER >> /home/p4d/ssmtp.conf
-#echo "hostname="$SMTP_NAME >> /home/p4d/ssmtp.conf
-#echo "FromLineOverride=YES" >> /home/p4d/ssmtp.conf
-#echo "UseTLS="$SMTP_TLS >> /home/p4d/ssmtp.conf
-#echo "UseSTARTTLS="$SMTP_STARTTLS >> /home/p4d/ssmtp.conf
-#echo "AuthUser="$SMTP_USERNAME >> /home/p4d/ssmtp.conf
-#echo "AuthPass="$SMTP_PASSWORD >> /home/p4d/ssmtp.conf
-
-#echo "root:"$SMTP_MAIL_FROM:$SMTP_SERVER
-
-#echo "root:"$SMTP_MAIL_FROM:$SMTP_SERVER >> /home/p4d/revaliases
 
 /home/p4d/p4d.sh
