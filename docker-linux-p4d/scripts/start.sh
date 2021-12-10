@@ -3,7 +3,6 @@ touch /home/p4d/daemon.conf
 touch /home/p4d/msmtprc
 
 echo "Setup daemon.conf"
-echo "DbPass = "$DB_PASS
 
 #Reading DB_HOST Variable and writing it to /home/p4d/daemon.conf
 if [test -z $DB_HOST]
@@ -156,5 +155,6 @@ echo "Copy daemon.conf to /etc/p4d/daemon.conf"
 cp /home/p4d/daemon.conf /etc/p4d/daemon.conf
 echo "Copy msmtprc to /etc/msmtprc"
 cp /home/p4d/msmtprc /etc/msmtprc
+
 
 /home/p4d/p4d.sh
