@@ -135,7 +135,7 @@ services:
     restart: unless-stopped
 ```
 
-To add Automatic Update funktionality to your Docker Container you can add this to your compose file:
+To add Automatic Update functionality to your Docker Container you can add this to your compose file:
 
 ```yaml
 watchtower:
