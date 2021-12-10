@@ -43,6 +43,122 @@ If this project help you, you can give me a cup of coffee :)
 For a ready Build Image visit:
 https://hub.docker.com/r/n3m3515/docker-p4d
 
+## Usage
+
+### Docker Standalone
+
+Example full stack deployment via docker-compose.
+
+Save and edit the the below configuration as docker-compose.yml and run `docker-compose up -d` from the same directory.
+
+```yaml
+# WARNING: Replace the example passwords with secure secrets.
+
+services:
+  p4d:
+    image: n3m3515/docker-p4d:latest
+    container_name: docker-p4d
+    privileged: true
+    environment:
+      - DB_HOST=p4d_db
+      - DB_PORT=3306
+      - DB_USER=p4
+      - DB_PASS=p4
+      - DB_NAME=p4
+      - SMTP_MAIL_FROM=user@web.de
+      - SMTP_SERVER=smtp.web.de
+      - SMTP_Port=587
+      - SMTP_TLS=on
+      - SMTP_AUTH=on
+      - SMTP_USERNAME=user
+      - SMTP_PASSWORD=password
+      - TZ=Europe/Berlin
+    ports:
+      - 1111:1111
+    devices:
+      - /dev/ttyUSB0:/dev/ttyUSB0
+    volumes:
+      - /linux_p4d/userimages:/var/lib/p4d/img/user/
+    restart: unless-stopped
+    depends_on:
+      - p4d_db
+  p4d_db:
+    image: lscr.io/linuxserver/mariadb
+    container_name: p4d_db
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - MYSQL_ROOT_PASSWORD=p4d
+      - TZ=Europe/Berlin
+      - MYSQL_DATABASE=p4d
+      - MYSQL_USER=p4d
+      - MYSQL_PASSWORD=p4d
+    volumes:
+      - /linux_p4d/mariadb:/config
+    restart: unless-stopped
+
+
+```
+
+### Docker External MySQL Server
+
+Example external MySQL server deployment via docker-compose.
+
+Save and edit the the below configuration as docker-compose.yml and run `docker-compose  up -d` from the same directory.
+
+```yaml
+services:
+  p4d:
+    image: n3m3515/docker-p4d:latest
+    container_name: linux_p4d
+    privileged: true
+    environment:
+      - DB_HOST=database_hostname_or_ip
+      - DB_PORT=3306
+      - DB_USER=p4
+      - DB_PASS=p4
+      - DB_NAME=p4
+      - SMTP_MAIL_FROM=user@web.de
+      - SMTP_SERVER=smtp.web.de
+      - SMTP_Port=587
+      - SMTP_TLS=on
+      - SMTP_AUTH=on
+      - SMTP_USERNAME=user
+      - SMTP_PASSWORD=password
+      - TZ=Europe/Berlin
+    ports:
+      - 1111:1111
+    devices:
+      - /dev/ttyUSB0:/dev/ttyUSB0
+    volumes:
+      - /linux_p4d/userimages:/var/lib/p4d/img/user/
+    restart: unless-stopped
+```
+
+## Configuration
+
+### Supported Docker Environment Variables
+
+A subset of available linux-p4d configuration settings in daemon.conf and msmtprc can be configured via Docker Environment variables.
+
+
+
+| ENV                          | Default                 | Container | Description                                                                                     |
+|------------------------------|-------------------------|:------------------:|-------------------------------------------------------------------------------------------------|
+| **TZ**                       | "UTC"                   |        ✅        | Time Zone (e.g "Europe/London")                                                                 |
+| **DB_HOST** 📂    | "localhost"             |        ✅        | MySQL database host                                                                             |
+| **DB_USER** 📂    | "p4"               |        ✅        | MySQL database user                                                                             |
+| **DB_PASS** 📂    | "p4"          |        ✅        | MySQL database password                                                                         |
+| **DB_NAME** 📂    | "p4"               |        ✅        | MySQL database name                                                                             |
+| **DB_PORT** 📂    | 3306                    |        ✅        | MySQL database port                                                                             |
+| **SMTP_PORT** 📂    | 25                    |        ✅        | SMTP Connection port                                                                             |
+| **SMTP_MAIL_FROM** 📂    | user@domain.com                    |        ✅        | SMTP Sender Adress                                                                        |
+| **SMTP_TLS** 📂    | off                    |        ✅        | SMTP TLS Option can be on or off                                                                            |
+| **SMTP_SERVER** 📂    | smtp.server.com                    |        ✅        | SMTP Server Hostname or IP                                                                   |
+| **SMTP_AUTH** 📂    | off                    |        ✅        | SMTP Auth Method can be on or off                                                                          |
+| **SMTP_USERNAME** 📂    | username                    |        ✅        | SMTP Username                                                                             |
+| **SMTP_PASSWORD** 📂    | password                    |        ✅        | SMTP Password                                                                             |
+
 # Build Process
 Setting up the Build Enviroment:
 Install Dependencies:
