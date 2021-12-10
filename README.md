@@ -135,6 +135,16 @@ services:
     restart: unless-stopped
 ```
 
+To add Automatic Update funktionality to your Docker Container you can add this to your compose file:
+
+```yaml
+watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 86400
+```
+
 ## Configuration
 
 ### Supported Docker Environment Variables
