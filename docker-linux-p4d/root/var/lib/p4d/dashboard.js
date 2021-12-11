@@ -8,7 +8,7 @@
  *
  */
 
-const widgetWidthBase = '212';
+var widgetWidthBase = null;
 
 var actDashboard = -1;
 var gauge = null;
@@ -28,11 +28,12 @@ function initDashboard(update = false)
       $('#dashboardMenu').html('');
    }
 
-   $("#container").height($(window).height() - $("#menu").height() - 8);
-
-   window.onresize = function() {
-      $("#container").height($(window).height() - $("#menu").height() - 8);
-   };
+//   $("#container").height($(window).height() - $("#menu").height() - $("#dashboardMenu").height() - 8);
+//
+//   window.onresize = function() {
+//      $("#container").height($(window).height() - $("#menu").height() - $("#dashboardMenu").height() - 8);
+//      // $("#container").height($(window).height() - $("#menu").height() - 8);
+//   };
 
    // setupMode = true;  // to debug
 
@@ -78,6 +79,13 @@ function initDashboard(update = false)
                                     .click({"id" : did}, function(event) { dashboardSetup(event.data.id); })
                                    );
    }
+
+   $("#container").height($(window).height() - $("#menu").height() - $("#dashboardMenu").height() - 10);
+
+   window.onresize = function() {
+      $("#container").height($(window).height() - $("#menu").height() - $("#dashboardMenu").height() - 10);
+      // $("#container").height($(window).height() - $("#menu").height() - 8);
+   };
 
    document.getElementById("container").innerHTML = '<div id="widgetContainer" class="widgetContainer"></div>';
 
@@ -177,6 +185,9 @@ function initWidget(sensor, widget, fact)
    elem.innerHTML = "";
    var marginPadding = 8;
 
+   if (widgetWidthBase == null)
+      widgetWidthBase = elem.clientWidth;
+
    // console.log("clientWidth: " + elem.clientWidth + ' : ' + widgetWidthBase);
    elem.style.width = widgetWidthBase * widget.widthfactor + ((widget.widthfactor-1) * marginPadding) + 'px';
 
@@ -256,6 +267,7 @@ function initWidget(sensor, widget, fact)
          ePeak.setAttribute('id', 'peak' + fact.type + fact.address);
          ePeak.className = "chart-peak";
          elem.appendChild(ePeak);
+         $("#widget" + fact.type + fact.address).css('color', widget.color);
          break;
 
       case 4:           // Gauge
@@ -416,6 +428,7 @@ function initWidget(sensor, widget, fact)
          html += '<div id="widget' + fact.type + fact.address + '" class="widget-value" style="height:inherit;"></div>';
          elem.className = "widgetPlain rounded-border widgetDropZone";
          elem.innerHTML = html;
+         $("#widget" + fact.type + fact.address).css('color', widget.color);
          break;
 
       case 8:     // 8 (Choice)
@@ -430,20 +443,21 @@ function initWidget(sensor, widget, fact)
                          });
             ;}, false);
          elem.innerHTML = html;
+         $("#widget" + fact.type + fact.address).css('color', widget.color);
          break;
 
       case 9:           // Symbol-Value
          var html = editButton;
          if (localStorage.getItem(storagePrefix + 'Rights') & fact.rights) {
             html += '  <button class="widget-title" type="button" onclick="toggleMode(' + fact.address + ", '" + fact.type + '\')">' + title + '</button>';
-            html += '  <button class="widget-main" type="button" onclick="toggleIo(' + fact.address + ",'" + fact.type + '\')" >';
+            html += '  <button id="button' + fact.type + fact.address + '" class="widget-main" type="button" style="font-size:6em;" onclick="toggleIo(' + fact.address + ",'" + fact.type + '\')" >';
          }
          else {
-            html += '  <button class="widget-title" type="button">' + title + '</button>';
-            html += '  <button id="button' + fact.type + fact.address + '" class="widget-main" type="button">';
+            html += '  <button class="widget-title">' + title + '</button>';
+            html += '  <button id="button' + fact.type + fact.address + '" class="widget-main" style="font-size:6em;" type="button">';
          }
 
-         html += '    <img id="widget' + fact.type + fact.address + '" draggable="false")/>';
+         html += '    <img id="widget' + fact.type + fact.address + '" draggable="false"/>';
          html += "   </button>\n";
 
          html += "<div id=\"progress" + fact.type + fact.address + "\" class=\"widget-progress\">";
@@ -459,6 +473,7 @@ function initWidget(sensor, widget, fact)
          eValue.className = "symbol-value";
          elem.appendChild(eValue);
 
+         $("#button" + fact.type + fact.address).css('color', widget.color);
          break;
 
       case 998:     // 998 (Add Widget)
@@ -486,6 +501,7 @@ function initWidget(sensor, widget, fact)
          if (!setupMode)
             elem.setAttribute("onclick", "toggleChartDialog('" + fact.type + "'," + fact.address + ")");
          elem.innerHTML = html;
+         $("#widget" + fact.type + fact.address).css('color', widget.color);
          break;
    }
 }
@@ -533,16 +549,15 @@ function updateWidget(sensor, refresh, widget)
       else if (widget.symbol != null && widget.symbol != '') {
          classes = widget.symbol.replace(':', ' ');
          image = '';
+         $("#widget" + fact.type + fact.address).remove();
       }
       else
          image = sensor.value != 0 ? widget.imgon : widget.imgoff;
 
       if (image != '')
          $("#widget" + fact.type + fact.address).attr("src", image);
-      else {
+      else
          $("#button" + fact.type + fact.address).addClass(classes);
-         $("#widget" + fact.type + fact.address).addClass('hidden');
-      }
 
       var e = document.getElementById("div_" + key);
       e.setAttribute("style", modeStyle);
@@ -681,13 +696,23 @@ function addWidget()
       width: "auto",
       title: "Add Widget",
       open: function() {
+         var i = 0;
+         var jArray = [];
          for (var key in valueFacts) {
             if (!valueFacts[key].state)   // use only active facts here
                continue;
-            if (dashboards[actDashboard].widgets[key] == null)
-               $('#widgetKey').append($('<option></option>')
-                                      .val(key)
-                                      .html(valueFacts[key].usrtitle ? valueFacts[key].usrtitle : valueFacts[key].title));
+            if (dashboards[actDashboard].widgets[key] != null)
+               continue;
+            jArray.push([key, valueFacts[key]]);
+            i++;
+         }
+         jArray.sort();
+         console.table(jArray);
+         for (var i = 0; i < jArray.length; i++) {
+            console.log("push: " + i + ' : ' + jArray[i][0]);
+            $('#widgetKey').append($('<option></option>')
+                                   .val(jArray[i][0])
+                                   .html(jArray[i][1].usrtitle ? jArray[i][1].usrtitle : jArray[i][1].title));
          }
       },
       buttons: {
@@ -1214,9 +1239,25 @@ function widgetSetup(key)
                                   .css('text-align', 'end')
                                   .css('align-self', 'center')
                                   .css('margin-right', '10px')
+                                  .html('Farbe'))
+                          .append($('<span></span>')
+                                  .append($('<input></input>')
+                                          .addClass('rounded-border inputSetting')
+                                          .css('width', '80px')
+                                          .attr('id', 'color')
+                                          .attr('type', 'color')
+                                         )))
+
+                  .append($('<div></div>')
+                          .css('display', 'flex')
+                          .append($('<span></span>')
+                                  .css('width', '30%')
+                                  .css('text-align', 'end')
+                                  .css('align-self', 'center')
+                                  .css('margin-right', '10px')
                                   .html('Peak'))
                           .append($('<span></span>')
-                                  .append($('<input></select>')
+                                  .append($('<input></input>')
                                           .addClass('rounded-border inputSetting')
                                           .attr('id', 'peak')
                                           .attr('type', 'checkbox')
@@ -1309,6 +1350,7 @@ function widgetSetup(key)
                widget.imgon = $("#imgon").val();
                widget.imgoff = $("#imgoff").val();
                widget.widgettype = parseInt($("#widgettype").val());
+               widget.color = $("#color").val();
                widget.showpeak = $("#peak").is(':checked');
                widget.widthfactor = $("#widthfactor").val();
 
@@ -1329,6 +1371,7 @@ function widgetSetup(key)
                widget.imgon = $("#imgon").val();
                widget.imgoff = $("#imgoff").val();
                widget.widgettype = parseInt($("#widgettype").val());
+               widget.color = $("#color").val();
                widget.showpeak = $("#peak").is(':checked');
                widget.widthfactor = $("#widthfactor").val();
 
@@ -1368,6 +1411,7 @@ function widgetSetup(key)
             json[key]["widthfactor"] = parseFloat($("#widthfactor").val());
             json[key]["widgettype"] = parseInt($("#widgettype").val());
             json[key]["showpeak"] = $("#peak").is(':checked');
+            json[key]["color"] = $("#color").val();
 
             socket.send({ "event" : "storedashboards", "object" : { [actDashboard] : { 'title' : dashboards[actDashboard].title, 'widgets' : json } } });
             socket.send({ "event" : "forcerefresh", "object" : {} });
