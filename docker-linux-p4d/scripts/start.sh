@@ -158,5 +158,6 @@ cp /home/p4d/daemon.conf /etc/p4d/daemon.conf
 echo "Copy msmtprc to /etc/msmtprc"
 cp /home/p4d/msmtprc /etc/msmtprc
 
-
-/home/p4d/p4d.sh
+#Start p4d
+echo "Start p4d"
+/usr/bin/p4d -n -t | tee -a /var/log/p4d.log
