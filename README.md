@@ -45,6 +45,25 @@ https://hub.docker.com/r/n3m3515/docker-p4d
 
 ## Usage
 
+### Install Docker on a fresh Raspberry Pi
+
+```
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+sudo usermod -aG docker pi
+sudo curl -L "https://github.com/docker/compose/releases/download/v2.2.2/docker-compose-linux-armv7" -o /usr/bin/docker-compose
+sudo chmod +x /usr/bin/docker-compose
+```
+
+#### Install p4d directly into Docker:
+ 
+```
+cd ~
+curl -fsSL https://raw.githubusercontent.com/N3m3515/docker-p4d/main/docker-compose.yml -o /home/pi/docker-compose.yml 
+docker-compose up -d
+```
+
+
 ### Docker Standalone
 
 Example full stack deployment via docker-compose.
