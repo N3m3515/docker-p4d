@@ -45,6 +45,25 @@ https://hub.docker.com/r/n3m3515/docker-p4d
 
 ## Usage
 
+### Install Docker on a fresh Raspberry Pi
+
+```
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+sudo usermod -aG docker pi
+sudo curl -L "https://github.com/docker/compose/releases/download/v2.2.2/docker-compose-linux-armv7" -o /usr/bin/docker-compose
+sudo chmod +x /usr/bin/docker-compose
+```
+
+#### Install p4d directly into Docker:
+ 
+```
+cd ~
+curl -fsSL https://raw.githubusercontent.com/N3m3515/docker-p4d/main/docker-compose.yml -o /home/pi/docker-compose.yml 
+docker-compose up -d
+```
+
+
 ### Docker Standalone
 
 Example full stack deployment via docker-compose.
@@ -62,9 +81,9 @@ services:
     environment:
       - DB_HOST=p4d_db
       - DB_PORT=3306
-      - DB_USER=p4
-      - DB_PASS=p4
-      - DB_NAME=p4
+      - DB_USER=p4_user
+      - DB_PASS=p4_pass
+      - DB_NAME=p4_db
       - SMTP_MAIL_FROM=user@web.de
       - SMTP_SERVER=smtp.web.de
       - SMTP_Port=587
@@ -88,11 +107,11 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - MYSQL_ROOT_PASSWORD=p4d
+      - MYSQL_ROOT_PASSWORD=p4_pass
       - TZ=Europe/Berlin
-      - MYSQL_DATABASE=p4d
-      - MYSQL_USER=p4d
-      - MYSQL_PASSWORD=p4d
+      - MYSQL_DATABASE=p4_db
+      - MYSQL_USER=p4_user
+      - MYSQL_PASSWORD=p4_pass
     volumes:
       - /linux_p4d/mariadb:/config
     restart: unless-stopped
