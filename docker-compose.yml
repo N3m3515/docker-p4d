@@ -34,9 +34,9 @@ services:
       - PGID=1000
       - MYSQL_ROOT_PASSWORD=p4d
       - TZ=Europe/Berlin
-      - MYSQL_DATABASE=p4d
-      - MYSQL_USER=p4d
-      - MYSQL_PASSWORD=p4d
+      - MYSQL_DATABASE=p4
+      - MYSQL_USER=p4
+      - MYSQL_PASSWORD=p4
     volumes:
       - /linux_p4d/mariadb:/config
     restart: unless-stopped
