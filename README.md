@@ -81,9 +81,9 @@ services:
     environment:
       - DB_HOST=p4d_db
       - DB_PORT=3306
-      - DB_USER=p4
-      - DB_PASS=p4
-      - DB_NAME=p4
+      - DB_USER=p4_user
+      - DB_PASS=p4_pass
+      - DB_NAME=p4_db
       - SMTP_MAIL_FROM=user@web.de
       - SMTP_SERVER=smtp.web.de
       - SMTP_Port=587
@@ -107,11 +107,11 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - MYSQL_ROOT_PASSWORD=p4
+      - MYSQL_ROOT_PASSWORD=p4_pass
       - TZ=Europe/Berlin
-      - MYSQL_DATABASE=p4
-      - MYSQL_USER=p4
-      - MYSQL_PASSWORD=p4
+      - MYSQL_DATABASE=p4_db
+      - MYSQL_USER=p4_user
+      - MYSQL_PASSWORD=p4_pass
     volumes:
       - /linux_p4d/mariadb:/config
     restart: unless-stopped
