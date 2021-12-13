@@ -59,6 +59,27 @@ echo "DbPass = "$DB_PASS
 echo "DbPass = "$DB_PASS >> /home/p4d/daemon.conf
 fi
 
+#Reading AG_HISTORY Variable and writing it to /home/p4d/daemon.conf
+if [[ -z "$AG_HISTRORY" ]];
+then
+echo "Setting AG_HISTRORY to Default Value: 0"
+echo "aggregateHistory = 0" >> /home/p4d/daemon.conf
+AG_HISTRORY=0
+else
+echo "aggregateHistory = "$AG_HISTORY
+echo "aggregateHistory = "$AG_HISTORY >> /home/p4d/daemon.conf
+fi
+
+#Reading AG_INTERVAL Variable and writing it to /home/p4d/daemon.conf
+if [[ -z "$AG_INTERVAL" ]];
+then
+echo "Setting AG_INTERVAL to Default Value: 15"
+echo "aggregateInterval = 15" >> /home/p4d/daemon.conf
+AG_INTERVAL=15
+else
+echo "aggregateInterval = "$AG_INTERVAL
+echo "aggregateInterval = "$AG_INTERVAL >> /home/p4d/daemon.conf
+fi
 
 
 echo "Setup msmtprc"

@@ -180,6 +180,8 @@ A subset of available linux-p4d configuration settings in daemon.conf and msmtpr
 | **DB_PASS** 📂    | "p4"          |        ✅        | MySQL database password                                                                         |
 | **DB_NAME** 📂    | "p4"               |        ✅        | MySQL database name                                                                             |
 | **DB_PORT** 📂    | 3306                    |        ✅        | MySQL database port                                                                             |
+| **AG_HISTORY** 📂    | 0                    |        ✅        | The history for aggregation in days                                                                             |
+| **AG_INTERVAL** 📂    | 15                    |        ✅        | The aggregation interval in minutes                                                                             |
 | **SMTP_PORT** 📂    | 25                    |        ✅        | SMTP Connection port                                                                             |
 | **SMTP_MAIL_FROM** 📂    | user@domain.com                    |        ✅        | SMTP Sender Adress                                                                        |
 | **SMTP_TLS** 📂    | off                    |        ✅        | SMTP TLS Option can be on or off                                                                            |
