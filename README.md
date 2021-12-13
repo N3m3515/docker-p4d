@@ -99,7 +99,7 @@ services:
     devices:
       - /dev/ttyUSB0:/dev/ttyUSB0
     volumes:
-      - /linux_p4d/scripts:/etc/p4d/scripts.d/
+      - /linux_p4d/scripts:/etc/p4d/scripts.d/user/
       - /linux_p4d/userimages:/var/lib/p4d/img/user/
     restart: unless-stopped
     depends_on:
@@ -155,7 +155,7 @@ services:
     devices:
       - /dev/ttyUSB0:/dev/ttyUSB0
     volumes:
-      - /linux_p4d/scripts:/etc/p4d/scripts.d/
+      - /linux_p4d/scripts:/etc/p4d/scripts.d/user/
       - /linux_p4d/userimages:/var/lib/p4d/img/user/
     restart: unless-stopped
 ```
@@ -180,7 +180,7 @@ A subset of available linux-p4d configuration settings in daemon.conf and msmtpr
 
 | ENV                          | Default                 | Container | Description                                                                                     |
 |------------------------------|-------------------------|:------------------:|-------------------------------------------------------------------------------------------------|
-| **TZ**                       | "UTC"                   |        ✅        | Time Zone (e.g "Europe/London")                                                                 |
+| **TZ** 📂                       | "UTC"                   |        ✅        | Time Zone (e.g "Europe/London")                                                                 |
 | **DB_HOST** 📂    | "localhost"             |        ✅        | MySQL database host                                                                             |
 | **DB_USER** 📂    | "p4"               |        ✅        | MySQL database user                                                                             |
 | **DB_PASS** 📂    | "p4"          |        ✅        | MySQL database password                                                                         |
