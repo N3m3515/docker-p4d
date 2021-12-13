@@ -84,6 +84,8 @@ services:
       - DB_USER=p4_user
       - DB_PASS=p4_pass
       - DB_NAME=p4_db
+      - AG_HISTORY=0
+      - AG_INTERVAL=15
       - SMTP_MAIL_FROM=user@web.de
       - SMTP_SERVER=smtp.web.de
       - SMTP_Port=587
@@ -97,6 +99,7 @@ services:
     devices:
       - /dev/ttyUSB0:/dev/ttyUSB0
     volumes:
+      - /linux_p4d/scripts:/etc/p4d/scripts.d/
       - /linux_p4d/userimages:/var/lib/p4d/img/user/
     restart: unless-stopped
     depends_on:
@@ -137,6 +140,8 @@ services:
       - DB_USER=p4
       - DB_PASS=p4
       - DB_NAME=p4
+      - AG_HISTORY=0
+      - AG_INTERVAL=15
       - SMTP_MAIL_FROM=user@web.de
       - SMTP_SERVER=smtp.web.de
       - SMTP_Port=587
@@ -150,6 +155,7 @@ services:
     devices:
       - /dev/ttyUSB0:/dev/ttyUSB0
     volumes:
+      - /linux_p4d/scripts:/etc/p4d/scripts.d/
       - /linux_p4d/userimages:/var/lib/p4d/img/user/
     restart: unless-stopped
 ```
