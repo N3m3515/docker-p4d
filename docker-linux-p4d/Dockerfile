@@ -7,5 +7,6 @@ COPY scripts/ /home/p4d/
 EXPOSE 1111
 # Healthcheck
 HEALTHCHECK --interval=10s --retries=5 --start-period=5s --timeout=5s CMD sudo /usr/bin/p4 getv -a 1 || exit 1
+RUN sudo apt-get install -y rsyslog
 # Run Daemon
 CMD ["sudo","-E","/home/p4d/start.sh"]
