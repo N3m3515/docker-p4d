@@ -9,6 +9,7 @@ if [[ -z "$DB_HOST" ]];
 then
 echo "Setting DB_HOST to Default Value: localhost"
 echo "DbHost = localhost " >> /home/p4d/daemon.conf
+DB_HOST=localhost
 else
 echo "DbHost = "$DB_HOST
 echo "DbHost = "$DB_HOST >> /home/p4d/daemon.conf
@@ -19,6 +20,7 @@ if [[ -z "$DB_PORT" ]];
 then
 echo "Setting DB_PORT to Default Value: 3306"
 echo "DbPort = 3306" >> /home/p4d/daemon.conf
+DB_PORT=3306
 else
 echo "DbPort = "$DB_PORT
 echo "DbPort = "$DB_PORT >> /home/p4d/daemon.conf
@@ -29,6 +31,7 @@ if [[ -z "$DB_NAME" ]];
 then
 echo "Setting DB_NAME to Default Value: p4"
 echo "DbName = p4" >> /home/p4d/daemon.conf
+DB_NAME=p4
 else
 echo "DbName = "$DB_NAME
 echo "DbName = "$DB_NAME >> /home/p4d/daemon.conf
@@ -39,6 +42,7 @@ if [[ -z "$DB_USER" ]];
 then
 echo "Setting DB_USER to Default Value: p4"
 echo "DbUser = p4" >> /home/p4d/daemon.conf
+DB_USER=p4
 else
 echo "DbUser = "$DB_USER
 echo "DbUser = "$DB_USER >> /home/p4d/daemon.conf
@@ -49,6 +53,7 @@ if [[ -z "$DB_PASS" ]];
 then
 echo "Setting DB_PASS to Default Value: p4"
 echo "DbPass = p4" >> /home/p4d/daemon.conf
+DB_PASS=p4
 else
 echo "DbPass = "$DB_PASS
 echo "DbPass = "$DB_PASS >> /home/p4d/daemon.conf
@@ -65,6 +70,7 @@ if [[ -z "$SMTP_PORT" ]];
 then
 echo "Setting SMTP_PORT to Default Value: 25"
 echo "port 25" >> /home/p4d/msmtprc
+SMTP_PORT=25
 else
 echo "port "$SMTP_PORT
 echo "port "$SMTP_PORT >> /home/p4d/msmtprc
@@ -83,6 +89,7 @@ echo "Setting SMTP_MAIL_FROM to Default Value: user@domain.com"
 echo "account user@domain.com" >> /home/p4d/msmtprc
 echo "from user@domain.com" >> /home/p4d/msmtprc
 echo "account default: user@domain.com" >> /home/p4d/msmtprc
+SMTP_MAIL_FROM=user@domain.com
 else
 echo "account "$SMTP_MAIL_FROM
 echo "account "$SMTP_MAIL_FROM >> /home/p4d/msmtprc
@@ -95,6 +102,7 @@ if [[ -z "$SMTP_TLS" ]];
 then
 echo "Setting SMTP_TLS to Default Value: off"
 echo "tls off" >> /home/p4d/msmtprc
+SMTP_TLS=off
 else
  if [[ "$SMTP_TLS" == "off" ]];
  then
@@ -111,6 +119,7 @@ if [[ -z "$SMTP_SERVER" ]];
 then
 echo "Setting SMTP_SERVER to Default Value: smtp.server.com"
 echo "host smtp.server.com" >> /home/p4d/msmtprc
+SMTP_SERVER=smtp.server.com
 else
 echo "host "$SMTP_SERVER
 echo "host "$SMTP_SERVER >> /home/p4d/msmtprc
@@ -121,6 +130,7 @@ if [[ -z "$SMTP_AUTH" ]];
 then
 echo "Setting SMTP_AUTH to Default Value: off"
 echo "auth off" >> /home/p4d/msmtprc
+SMTP_AUTH=off
 else
  if [[ "$SMTP_AUTH" == "off" ]];
  then
@@ -137,6 +147,7 @@ if [[ -z "$SMTP_USERNAME" ]];
 then
 echo "Setting SMTP_USERNAME to Default Value: username"
 echo "user username" >> /home/p4d/msmtprc
+SMTP_USERNAME=username
 else
 echo "user "$SMTP_USERNAME
 echo "user "$SMTP_USERNAME >> /home/p4d/msmtprc
@@ -147,6 +158,7 @@ if [[ -z "$SMTP_PASSWORD" ]];
 then
 echo "Setting SMTP_PASSWORD to Default Value: password"
 echo "password password" >> /home/p4d/msmtprc
+SMTP_PASSWORD=password
 else
 echo "password "$SMTP_PASSWORD
 echo "password "$SMTP_PASSWORD >> /home/p4d/msmtprc

@@ -3,6 +3,7 @@ FROM linux_p4d-base
 #Copy Precompiled binaries to root directory
 COPY root/ /
 COPY scripts/ /home/p4d/
+RUN sudo touch /var/log/p4d.log
 # Epose TCP Port 1111
 EXPOSE 1111
 # Healthcheck
