@@ -35,20 +35,19 @@ var infoDialogTimer = null;
 var grouplist = {};
 
 var setupMode = false;
+var kioskMode = false;
+var kioskBackTime = 0;
 
 $('document').ready(function() {
-
-   // just a deconz ws test
-   if (false) {
-      const ws = new WebSocket('ws://' + '192.168.200.101' + ':' + 443);
-      ws.onmessage = function(msg) {
-         console.log(JSON.parse(msg.data));
-      }
-   }
-
    daemonState.state = -1;
    s3200State.state = -1;
+
+   const urlParams = new URLSearchParams(window.location.href);
+   kioskMode = urlParams.get('kiosk') == 1;
+   kioskBackTime = urlParams.get('backTime');
+   console.log("kioskMode" + " : " + kioskMode);
    console.log("currentPage: " + currentPage);
+
    var url = "";
 
    if (window.location.href.startsWith("https"))
@@ -58,6 +57,7 @@ $('document').ready(function() {
 
    var protocol = myProtocol;
 
+   moment.locale('de');
    connectWebSocket(url, protocol);
    colorStyle = getComputedStyle(document.body);
 });
@@ -295,6 +295,12 @@ function dispatchMessage(message)
    }
    else if (event == "config") {
       config = jMessage.object;
+      // console.log("config " + JSON.stringify(config, undefined, 4));
+      if (config.background != '') {
+         // $(document.body).addClass('body-background');
+         $(document.body).css('background', 'transparent url(' + config.background + ') no-repeat 50% 0 fixed');
+         $(document.body).css('background-size', 'cover');
+      }
    }
    else if (event == "configdetails" && currentPage == 'setup') {
       initConfig(jMessage.object)
@@ -387,12 +393,15 @@ function prepareMenu()
    var html = "";
    // var haveToken = localStorage.getItem(storagePrefix + 'Token') && localStorage.getItem(storagePrefix + 'Token') != "";
 
+   if (kioskMode)
+      return ;
+
    console.log("prepareMenu: " + currentPage);
 
    html += '<button class="rounded-border button1" onclick="mainMenuSel(\'dashboard\')">Dashboards</button>';
    html += '<button class="rounded-border button1" onclick="mainMenuSel(\'list\')">Liste</button>';
    html += '<button class="rounded-border button1" onclick="mainMenuSel(\'chart\')">Charts</button>';
-   html += '<button class="rounded-border button1" onclick="mainMenuSel(\'schema\')">Funktionsschema</button>';
+   html += '<button class="rounded-border button1" onclick="mainMenuSel(\'schema\')">Schema</button>';
    // html += '<button id="vdrMenu" class="rounded-border button1" onclick="mainMenuSel(\'vdr\')">VDR</button>';
 
    html += '<button class="rounded-border button1" onclick="mainMenuSel(\'menu\')">Service Menü</button>';
@@ -439,7 +448,7 @@ function prepareMenu()
    else if (currentPage == "iosetup") {
       html += "<div class=\"confirmDiv\">";
       html += "  <button class=\"rounded-border buttonOptions\" onclick=\"storeIoSetup()\">Speichern</button>";
-      html += "  <button class=\"rounded-border buttonOptions\" id=\"filterIoSetup\" onclick=\"filterIoSetup()\">[alle]</button>";
+      html += "  <button class=\"rounded-border buttonOptions\" title=\"filter alle/aktive\" id=\"filterIoSetup\" onclick=\"filterIoSetup()\">[alle]</button>";
       html += '  <input id="incSearchName" class="input rounded-border clearableOD" placeholder="filter..." type="search" oninput="doIncrementalFilterIoSetup()"</input>';
       html += "</div>";
    }
@@ -458,20 +467,20 @@ function prepareMenu()
       html += '<div id="confirm" class="confirmDiv"/>';
    }
 
-   if (currentPage == "menu") {
-      if (localStorage.getItem(storagePrefix + 'Rights') & 0x08 || localStorage.getItem(storagePrefix + 'Rights') & 0x10) {
-         html += "<div class=\"confirmDiv\">";
-         html += "  <button class=\"rounded-border buttonOptions\" onclick=\"updateTimeRanges()\">Zeiten aktualisieren</button>";
-         html += "</div>";
-      }
-   }
-
    if (currentPage == "schema") {
       if (localStorage.getItem(storagePrefix + 'Rights') & 0x08 || localStorage.getItem(storagePrefix + 'Rights') & 0x10) {
          html += "<div class=\"confirmDiv\">";
          html += "  <button class=\"rounded-border buttonOptions\" onclick=\"schemaEditModeToggle()\">Anpassen</button>";
          html += "  <button class=\"rounded-border buttonOptions\" id=\"buttonSchemaAddItem\" title=\"Konstante (Text) hinzufügen\" style=\"visibility:hidden;\" onclick=\"schemaAddItem()\">&#10010;</button>";
          html += "  <button class=\"rounded-border buttonOptions\" id=\"buttonSchemaStore\" style=\"visibility:hidden;\" onclick=\"schemaStore()\">Speichern</button>";
+         html += "</div>";
+      }
+   }
+
+   if (currentPage == "menu") {
+      if (localStorage.getItem(storagePrefix + 'Rights') & 0x08 || localStorage.getItem(storagePrefix + 'Rights') & 0x10) {
+         html += "<div class=\"confirmDiv\">";
+         html += "  <button class=\"rounded-border buttonOptions\" onclick=\"updateTimeRanges()\">Zeiten aktualisieren</button>";
          html += "</div>";
       }
    }
@@ -485,15 +494,15 @@ function prepareMenu()
 function menuBurger()
 {
    var haveToken = localStorage.getItem(storagePrefix + 'Token') && localStorage.getItem(storagePrefix + 'Token') != "";
-
    var form = '<div id="burgerPopup" style="padding:0px;">';
-   if (haveToken) {
+
+   if (haveToken)
       form += '<button style="width:120px;" class="rounded-border button1" onclick="mainMenuSel(\'user\')">[' + localStorage.getItem(storagePrefix + 'User') + ']</button>';
-      if (currentPage == 'dashboard')
-         form += '  <br/><div><button style="width:120px;color" class="rounded-border button1 mdi mdi-lead-pencil" onclick=" setupDashboard()">' + (setupMode ? ' Stop Setup' : ' Setup Dashboard') + '</button></div>';
-   }
    else
       form += '<button style="width:120px;" class="rounded-border button1" onclick="mainMenuSel(\'login\')">Login</button>';
+
+   if (currentPage == 'dashboard' && localStorage.getItem(storagePrefix + 'Rights') & 0x10)
+      form += '  <br/><div><button style="width:120px;color" class="rounded-border button1 mdi mdi-lead-pencil" onclick=" setupDashboard()">' + (setupMode ? ' Stop Setup' : ' Setup Dashboard') + '</button></div>';
 
    form += '</div>';
 
@@ -715,8 +724,10 @@ window.toggleMode = function(address, type)
 window.toggleIo = function(address, type)
 {
    socket.send({ "event": "toggleio", "object":
-                 { "address": address,
-                   "type": type }
+                 {
+                    'action': 'toggle',
+                    'address': address,
+                    'type': type }
                });
 }
 
@@ -825,7 +836,7 @@ function drawChartWidget(dataObject)
                   color: "gray"
                },
                ticks: {
-                  padding: 10,
+                  padding: 0,
                   maxTicksLimit: 6,
                   maxRotation: 0,
                   fontColor: "darkgray"
@@ -839,7 +850,7 @@ function drawChartWidget(dataObject)
                   zeroLineColor: 'darkgray'
                },
                ticks: {
-                  padding: 10,
+                  padding: 5,
                   maxTicksLimit: 5,
                   fontColor: "darkgray"
                }
@@ -852,10 +863,10 @@ function drawChartWidget(dataObject)
       var dataset = {};
 
       dataset["data"] = dataObject.rows[i].data;
-      dataset["backgroundColor"] = "#415969";  // fill color
+      dataset["backgroundColor"] = kioskMode ? "#3498db33" : "#3498db1A";  // fill color
       dataset["borderColor"] = "#3498db";      // line color
       dataset["borderWidth"] = 1;
-      dataset["fill"] = false;
+      dataset["fill"] = true;
       dataset["pointRadius"] = 1.5;
       data.data.datasets.push(dataset);
    }
@@ -910,7 +921,7 @@ function drawChartDialog(dataObject)
                display: true,
                ticks: {
                   maxTicksLimit: 12,
-                  padding: 10,
+                  padding: 5,
                   maxRotation: 0,
                   fontColor: "white"
                },
@@ -927,7 +938,7 @@ function drawChartDialog(dataObject)
             yAxes: [{
                display: true,
                ticks: {
-                  padding: 10,
+                  padding: 5,
                   maxTicksLimit: 20,
                   fontColor: "white"
                },
@@ -951,10 +962,10 @@ function drawChartDialog(dataObject)
       var dataset = {};
 
       dataset["data"] = dataObject.rows[i].data;
-      dataset["backgroundColor"] = "#415969";  // fill color
+      dataset["backgroundColor"] = kioskMode ? "#3498db33" : "#3498db1A";  // fill color
       dataset["borderColor"] = "#3498db";      // line color
       dataset["borderWidth"] = 1;
-      dataset["fill"] = false;
+      dataset["fill"] = true;
       dataset["label"] = dataObject.rows[i].title;
       dataset["pointRadius"] = 0;
       data.data.datasets.push(dataset);
@@ -1018,3 +1029,8 @@ Date.prototype.toDateLocal = function toDateLocal()
 
    return YYYY + '-' + MM + '-' + DD;
 };
+
+function getTotalHeightOf(id)
+{
+   return $('#' + id).height() + parseInt($('#' + id).css('padding')) + parseInt($('#' + id).css('margin'));
+}

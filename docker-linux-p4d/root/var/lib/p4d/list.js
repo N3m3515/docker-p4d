@@ -27,7 +27,7 @@ function initList()
    document.getElementById("stateContainer").innerHTML =
       '<div id="stateContainerS3200" class="rounded-border heatingState"></div>' +
       '<div id="stateContainerImage" class="rounded-border imageState"></div>' +
-      '<div id="stateContainerP4" class="rounded-border daemonState"></div>';
+      '<div id="stateContainerDaemon" class="rounded-border daemonState"></div>';
 
    // heating state
 
@@ -57,7 +57,8 @@ function initList()
    rootStateImage.innerHTML = html;
 
    // daemon state
-   var rootStateP4 = document.getElementById("stateContainerP4");
+
+   var rootStateP4 = document.getElementById("stateContainerDaemon");
 
    if (daemonState.state != null && daemonState.state == 0)
    {
@@ -120,6 +121,13 @@ function initList()
    }
 
    updateList();
+
+   // calc container size
+
+   $("#container").height($(window).height() - getTotalHeightOf('menu') - getTotalHeightOf('stateContainer') - 10);
+   window.onresize = function() {
+      $("#container").height($(window).height() - getTotalHeightOf('menu') - getTotalHeightOf('stateContainer') - 10);
+   };
 }
 
 function updateList()
