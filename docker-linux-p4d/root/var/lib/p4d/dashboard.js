@@ -11,6 +11,7 @@
 var widgetWidthBase = null;
 var widgetHeightBase = null;
 
+var wInterval = null;
 var actDashboard = -1;
 var gauge = null;
 
@@ -550,17 +551,17 @@ function initWidget(key, widget, fact)
       }
 
       case 7: {    // 7 (PlainText)
-         $(elem)
-            .addClass("widgetPlain rounded-border widgetDropZone")
-            .append($('<div></div>')
-                    .addClass('widget-title ' + (setupMode ? 'mdi mdi-lead-pencil widget-edit' : ''))
-                    .click(function() {titleClick(fact.type, fact.addClass, key);})
-                    .html(title))
-            .append($('<div></div>')
-                    .attr('id', 'widget' + fact.type + fact.address)
-                    .addClass('widget-value')
-                    .css('color', widget.color)
-                    .css('height', 'inherit'));
+         $(elem).addClass('widgetPlain rounded-border widgetDropZone');
+         if (setupMode)
+            $(elem).append($('<div></div>')
+                           .addClass('widget-title ' + (setupMode ? 'mdi mdi-lead-pencil widget-edit' : ''))
+                           .click(function() {titleClick(fact.type, fact.addClass, key);})
+                           .html(title));
+         $(elem).append($('<div></div>')
+                        .attr('id', 'widget' + fact.type + fact.address)
+                        .addClass(fact.type == 'WEA' ? 'widget-weather' : 'widget-value')
+                        .css('color', widget.color)
+                        .css('height', 'inherit'));
          break;
       }
 
@@ -687,10 +688,10 @@ function initWidget(key, widget, fact)
                         .addClass('widget-value')
                         .css('height', 'inherit')
                         .css('color', widget.color)
-                        .html(moment().format('dddd Do<br/> MMMM YYYY<br/> HH:mm:ss')));
+                        .html(getTimeHtml()));
          setInterval(function() {
             var timeId = '#widget'+key.replace(':', '\\:');
-            $(timeId).html(moment().format('dddd Do<br/> MMMM YYYY<br/> HH:mm:ss'));
+            $(timeId).html(getTimeHtml());
          }, 1*1000);
 
          break;
@@ -713,6 +714,52 @@ function initWidget(key, widget, fact)
          break;
       }
    }
+}
+
+function getTimeHtml()
+{
+   var now = new Date();
+
+   // calc daytime every 60 seconds
+
+   if (!daytimeCalcAt || now.getTime() >= daytimeCalcAt.getTime()+60000){
+      daytimeCalcAt = now;
+      var sunset = new Date().sunset(config.latitude, config.longitude);
+      var sunrise = new Date().sunrise(config.latitude, config.longitude);
+      isDaytime = daytimeCalcAt > sunrise && daytimeCalcAt < sunset;
+      // console.log("isDaytime: " + isDaytime + ' : ' + sunrise + ' : '+ sunset);
+   }
+
+   var cls = isDaytime ? 'mdi mdi-weather-sunny' : 'mdi mdi-weather-night';
+
+   return '<span class="' + cls + ' " style="color:orange;"></span>'
+      + '<span>' + moment().format('dddd Do<br/> MMMM YYYY<br/>') + '</span>'
+      + '<span style="font-size:2em">' + moment().format('HH:mm:ss') + '</span>';
+}
+
+function getWeatherHtml(symbolView, wfact, weather)
+{
+   // https://openweathermap.org/weather-conditions#Weather-Condition-Codes-2
+
+   var html = '';
+
+   if (symbolView) {
+      var wIconRef = 'http://openweathermap.org/img/wn/' + weather.icon + '@4x.png';
+      html += '<div style="display:inline-flex;color:orange;font-weight:bold;height:75%"><span>' + weather.detail + '</span><img style="height:100%" src="' + wIconRef + '"></img></div>';
+      html += '<div><span style="color:#00c3ff;font-weight:bold;">' + weather.temp.toFixed(1) + '°C</span>';
+      html += '<span style="font-size:smaller;"> (' + weather.tempmin.toFixed(1) + ' / ' + weather.tempmax.toFixed(1) + ')' + '</span></div>';
+   }
+   else {
+      var wIconRef = 'http://openweathermap.org/img/wn/' + weather.icon + '.png';
+      html += '<div style="display:inline-flex;color:orange;font-weight:bold;"><span><img src="' + wIconRef + '"></img></span><span>' + weather.detail + '</span></div>';
+      html += '<div>Temp: <span style="color:#00c3ff;font-weight:bold;">' + weather.temp.toFixed(1) + '°C</span>';
+      html += '<span style="font-size:smaller;"> (' + weather.tempmin.toFixed(1) + ' / ' + weather.tempmax.toFixed(1) + ')' + '</span></div>';
+      html += '<div>Luftdruck: <span style="color:#00c3ff;font-weight:bold;">' + weather.pressure + ' hPa' + '</span></div>';
+      html += '<div>Luftfeuchte: <span style="color:#00c3ff;font-weight:bold;">' + weather.humidity + ' %' + '</span></div>';
+      html += '<div>Wind: <span style="color:#00c3ff;font-weight:bold;">' + weather.windspeed + ' m/s' + '</span></div>';
+   }
+
+   return html;
 }
 
 function titleClick(address, type, key)
@@ -875,7 +922,22 @@ function updateWidget(sensor, refresh, widget)
    }
    else if (widget.widgettype == 2 || widget.widgettype == 7 || widget.widgettype == 8)    // Text, PlainText, Choice
    {
-      if (sensor.text != null) {
+      console.log("updateWidget" + JSON.stringify(sensor, undefined, 4));
+      if (sensor.type == 'WEA' && sensor.text != null) {
+         var weather = JSON.parse(sensor.text);
+         var bigView = false;
+         var wfact = fact;
+         $("#widget" + wfact.type + wfact.address).html(getWeatherHtml(bigView, wfact, weather));
+         if (wInterval)
+            clearInterval(wInterval);
+         if (weather) {
+            wInterval = setInterval(function() {
+               bigView = !bigView;
+               $("#widget" + wfact.type + wfact.address).html(getWeatherHtml(bigView, wfact, weather));
+            }, 5*1000);
+         }
+      }
+      else if (sensor.text != null) {
          var text = sensor.text.replace(/(?:\r\n|\r|\n)/g, '<br>');
          $("#widget" + fact.type + fact.address).html(text);
       }
@@ -1037,8 +1099,9 @@ function addWidget()
             continue;
          if (dashboards[actDashboard].widgets[key] != null)
             continue;
-
-         if (filterExpression && !filterExpression.test(valueFacts[key].title) && !filterExpression.test(valueFacts[key].usrtitle))
+         if (filterExpression && !filterExpression.test(valueFacts[key].title) &&
+             !filterExpression.test(valueFacts[key].usrtitle) &&
+             !filterExpression.test(valueFacts[key].type))
             continue;
 
          jArray.push([key, valueFacts[key]]);
