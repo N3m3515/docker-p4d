@@ -195,6 +195,6 @@ cp /home/p4d/msmtprc /etc/msmtprc
 echo "Start rsyslogd"
 rsyslogd
 echo "Start w1mqtt"
-/usr/w1mqtt -u tcp://localhost:1883
+/usr/bin/w1mqtt -u tcp://localhost:1883
 echo "Start p4d"
 /usr/bin/p4d -n
