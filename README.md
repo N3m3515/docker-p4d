@@ -96,6 +96,7 @@ services:
       - TZ=Europe/Berlin
     ports:
       - 1111:1111
+      - 1883:1883
     devices:
       - /dev/ttyUSB0:/dev/ttyUSB0
     volumes:
@@ -153,6 +154,7 @@ services:
       - TZ=Europe/Berlin
     ports:
       - 1111:1111
+      - 1883:1883
     devices:
       - /dev/ttyUSB0:/dev/ttyUSB0
     volumes:

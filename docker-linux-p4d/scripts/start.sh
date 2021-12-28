@@ -198,15 +198,23 @@ cp /home/p4d/msmtprc /etc/msmtprc
 #Start p4d
 if [[ -z "$W1MQTT" ]];
 then
-echo "Not starting w1mqtt"
+echo "Starting w1mqtt with defaults"
+/usr/bin/w1mqtt -u tcp://172.0.0.1:1883
+W1MQTT=tcp://172.0.0.1:1883
 else
-echo "Start w1mqtt"
+echo "Start w1mqtt with connection to "$W1MQTT
 /usr/bin/w1mqtt -u $W1MQTT
 fi
+
 sleep 5
 echo "Start rsyslogd"
 #kill -TERM $(cat /var/run/rsyslogd.pid)
 rsyslogd -iNONE
 sleep 10
+echo "Start mosquitto"
+/usr/sbin/mosquitto -c /etc/mosquitto/mosquitto.conf -d
+sleep 5
 echo "Start p4d"
+sleep 1
 /usr/bin/p4d -n
+echo " "
