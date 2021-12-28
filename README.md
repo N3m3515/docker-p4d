@@ -115,6 +115,7 @@ services:
       - MYSQL_DATABASE=p4_db
       - MYSQL_USER=p4_user
       - MYSQL_PASSWORD=p4_pass
+      - REMOTE_SQL=https://raw.githubusercontent.com/N3m3515/docker-p4d/main/docker-init.sql
     volumes:
       - /linux_p4d/mariadb:/config
     restart: unless-stopped

@@ -190,8 +190,8 @@ echo "Copy daemon.conf to /etc/p4d/daemon.conf"
 cp /home/p4d/daemon.conf /etc/p4d/daemon.conf
 echo "Copy msmtprc to /etc/msmtprc"
 cp /home/p4d/msmtprc /etc/msmtprc
-echo "Copy state Files"
-cp /var/lib/p4d/img/state//dark/state-* /var/lib/p4d/img/state/
+#echo "Copy state Files"
+#cp /var/lib/p4d/img/state//dark/state-* /var/lib/p4d/img/state/
 
 
 
@@ -205,7 +205,8 @@ echo "Start w1mqtt"
 fi
 sleep 5
 echo "Start rsyslogd"
-rsyslogd
+#kill -TERM $(cat /var/run/rsyslogd.pid)
+rsyslogd -iNONE
 sleep 10
 echo "Start p4d"
 /usr/bin/p4d -n
