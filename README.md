@@ -172,7 +172,20 @@ watchtower:
       - /var/run/docker.sock:/var/run/docker.sock
     command: --interval 86400
 ```
-
+You can add Node-Red to your Docker Stack if you add this to your compose file:
+```yaml
+  node-red:
+    image: easypi/node-red
+    container_name: linux_p4d_node-red
+    environment:
+      - TZ=Europe/Berlin
+    ports:
+      - 1880:1880
+    volumes:
+      - /node-red/data:/data
+    privileged: true
+    restart: unless-stopped
+```
 ## Configuration
 
 ### Supported Docker Environment Variables
