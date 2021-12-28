@@ -195,7 +195,7 @@ A subset of available linux-p4d configuration settings in daemon.conf and msmtpr
 | **SMTP_AUTH** 📂    | off                    |        ✅        | SMTP Auth Method can be on or off                                                                          |
 | **SMTP_USERNAME** 📂    | username                    |        ✅        | SMTP Username                                                                             |
 | **SMTP_PASSWORD** 📂    | password                    |        ✅        | SMTP Password                                                                             |
-| **W1MQTT** 📂    |                     |        ✅        | URL to MQTT Broker for 1Wire Sensors (eg. tcp://localhost:1883)                                                                            $
+| **W1MQTT** 📂    |                     |        ✅        | URL to MQTT Broker for 1Wire Sensors (eg. tcp://localhost:1883)                                                                            |
 
 # Build Process
 Setting up the Build Enviroment:
