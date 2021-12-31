@@ -232,7 +232,7 @@ if [[ -z "$ENABLE_W1" ]];
   fi
   sleep 10
  else
-  if [[ "$ENABLE_MOS" == "true" ]];
+  if [[ "$ENABLE_W1" == "true" ]];
    then
     if [[ -z "$W1MQTT" ]];
      then
