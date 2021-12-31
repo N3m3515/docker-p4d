@@ -196,26 +196,60 @@ cp /home/p4d/msmtprc /etc/msmtprc
 
 
 #Start p4d
-echo "Start rsyslogd"
-#kill -TERM $(cat /var/run/rsyslogd.pid)
+echo "Starting rsyslogd"
 rsyslogd -iNONE
 sleep 1
 
-echo "Start mosquitto"
-/usr/sbin/mosquitto -c /etc/mosquitto/mosquitto.conf -d
-sleep 1
-
-if [[ -z "$W1MQTT" ]];
-then
-echo "Starting w1mqtt with defaults"
-/usr/bin/w1mqtt -u tcp://172.0.0.1:1883
-W1MQTT=tcp://172.0.0.1:1883
-else
-echo "Start w1mqtt with connection to "$W1MQTT
-/usr/bin/w1mqtt -u $W1MQTT
+if [[ -z "$ENABLE_MOS" ]];
+ then
+  echo "Starting mosquitto"
+  /usr/sbin/mosquitto -c /etc/mosquitto/mosquitto.conf -d
+  sleep 1
+  $ENABLE_MOS=true
+ else
+  if [[ "$ENABLE_MOS" == "true" ]];
+   then
+    echo "Starting mosquitto"
+    /usr/sbin/mosquitto -c /etc/mosquitto/mosquitto.conf -d
+    sleep 1
+   else
+    echo "Not starting mosquitto"
+    sleep 2
+  fi
 fi
-sleep 10
 
-echo "Start p4d"
+
+if [[ -z "$ENABLE_W1" ]];
+ then
+  if [[ -z "$W1MQTT" ]];
+   then
+    echo "Starting w1mqtt with defaults"
+    /usr/bin/w1mqtt -u tcp://172.0.0.1:1883
+    W1MQTT=tcp://172.0.0.1:1883
+   else
+    echo "Starting w1mqtt with connection to "$W1MQTT
+    /usr/bin/w1mqtt -u $W1MQTT
+  fi
+  sleep 10
+ else
+  if [[ "$ENABLE_MOS" == "true" ]];
+   then
+    if [[ -z "$W1MQTT" ]];
+     then
+      echo "Starting w1mqtt with defaults"
+      /usr/bin/w1mqtt -u tcp://172.0.0.1:1883
+      W1MQTT=tcp://172.0.0.1:1883
+     else
+      echo "Starting w1mqtt with connection to "$W1MQTT
+      /usr/bin/w1mqtt -u $W1MQTT
+    fi
+    sleep 10
+   else
+    echo "Not starting w1mqtt"
+    sleep 10
+  fi
+fi
+
+echo "Starting p4d"
 /usr/bin/p4d -n
 echo " "
