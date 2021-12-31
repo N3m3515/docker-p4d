@@ -211,7 +211,9 @@ A subset of available linux-p4d configuration settings in daemon.conf and msmtpr
 | **SMTP_AUTH** 📂    | off                    |        ✅        | SMTP Auth Method can be on or off                                                                          |
 | **SMTP_USERNAME** 📂    | username                    |        ✅        | SMTP Username                                                                             |
 | **SMTP_PASSWORD** 📂    | password                    |        ✅        | SMTP Password                                                                             |
-| **W1MQTT** 📂    |                     |        ✅        | URL to MQTT Broker for 1Wire Sensors (eg. tcp://localhost:1883)                                                                            |
+| **ENABLE_MOS** 📂    |       true         |        ✅        | Set this to false if you use an external MQTT Broker and want to disable the internal mosquitto Server        |
+| **ENABLE_W1** 📂    |       true         |        ✅        | Set this to false if you want to disable the internal 1Wire Sensor MQTT Client        |
+| **W1MQTT** 📂    |       tcp://localhost:1883         |        ✅        | URL to MQTT Broker for 1Wire Sensors (eg. tcp://localhost:1883)                                   |
 
 # Build Process
 Setting up the Build Enviroment:
